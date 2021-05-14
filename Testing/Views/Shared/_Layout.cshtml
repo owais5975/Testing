@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+    <style>
+        body {
+            background-color: #D6EAF8;
+        }
+
+        #Footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="Navbar" class="container-fluid mt-3">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/Home"><img src="~/Images/edition.png" />&nbsp;&nbsp;<b><i><small>MyNotes</small></i></b></a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" aria-current="page" href="/Home">Home</a>
+                        </li>
+                        @{
+                            if (User.Identity.IsAuthenticated)
+                            {
+                                if (User.IsInRole("Manager") || User.IsInRole("Admin"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Download">Download</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Users/Users">Users</a>
+                                    </li>
+                                }
+                                else if (User.IsInRole("Viewer"))
+                                {
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="/Download">Download</a>
+                                    </li>
+                                }
+
+                            }
+                        }
+
+                    </ul>
+                    <form class="d-flex">
+                        @{
+                            if (User.Identity.IsAuthenticated)
+                            {
+
+                                <img src="~/Images/user (2).png" class="my-auto" />
+                                <p class="text-black my-auto"><b><i><small> &nbsp; @User.Identity.Name &nbsp;&nbsp;&nbsp;&nbsp;</small></i></b></p>
+                                <a href="/Login/Logout" class="btn btn-danger mx-1">Logout</a>
+                            }
+                            else
+                            {
+                                <a href="/Login/Login" class="btn btn-success mx-1">Login</a>
+                                <a href="/Signup/Signup" class="btn btn-primary">Signup</a>
+                            }
+                        }
+
+
+                    </form>
+                </div>
+            </div>
+        </nav>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+
+        <footer id="Footer" class="container-fluid">
+            <hr />
+            <p>&copy; @DateTime.Now.Year - MyNotes</p>
+        </footer>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+</body>
+</html>

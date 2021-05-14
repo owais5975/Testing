@@ -1,0 +1,104 @@
+﻿@model IEnumerable<Testing.Models.User>
+
+@{
+    ViewBag.Title = "Users";
+}
+<style>
+    #SearchBox {
+        margin: 0px auto;
+        width: 300px;
+    }
+
+    .tableFixHead {
+        margin: 20px;
+        overflow: auto;
+        height: 400px;
+    }
+
+        .tableFixHead thead th {
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+    /* Just common table stuff. Really. */
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        padding: 8px 16px;
+    }
+
+    th {
+        background-color:;
+    }
+</style>
+@Html.Raw(@ViewBag.Success3)
+
+@using (Html.BeginForm("Users", "Users", FormMethod.Get))
+{
+    <div class="mt-3" id="SearchBox">
+        <div class="input-group mt-5">
+            @Html.TextBox("Search", "", new { @class = "form-control", placeholder = "Search Here" })
+            <input type="submit" class="btn btn-success" value="Search" />
+        </div>
+    </div>
+
+}
+<p class="text-secondary mt-5"><small><b><i>Total Records: @Html.Raw(@Model.Count())</i></b></small></p>
+<div class="tableFixHead">
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Role)
+                </th>
+                <th class="text-center">
+                    @Html.DisplayName("Action")
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+            @{
+                if (Model.Count() == 0)
+                {
+                    <tr>
+                        <td colspan="4" style="pointer-events:none; text-align:center;">No Record Found in Database</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Username)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Email)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Role)
+                            </td>
+                            <td class="text-center">
+                                <a href="/Ban/Ban/@item.Id" class="btn btn-primary disabled">Manage User</a>
+                                @*<a href="/Users/Delete/@item.Id" class="btn btn-danger ">Delete</a>*@
+                                <a href="/Users/Update/@item.Id" class="btn btn-danger">Assign Role</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
